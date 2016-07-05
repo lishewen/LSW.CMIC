@@ -1,5 +1,6 @@
 ﻿Imports System.Text
 Imports System.Threading
+Imports HtmlAgilityPack
 Imports LSW.Net
 
 Class MainWindow
@@ -49,7 +50,23 @@ Class MainWindow
 		Catch ex As Exception
 			Exit Function
 		End Try
-		My.Computer.Clipboard.SetText(brandhtml)
+		Dim html As New HtmlDocument
+		html.LoadHtml(brandhtml)
+		Dim brands = html.DocumentNode.SelectNodes("//div[@class='brand_name']")
+		For Each brand In brands
+			Dim b As New Brand With {.Name = brand.InnerText.Trim()}
+			Dim series = brand.NextSibling.NextSibling.SelectNodes("li/dl/dt/span/span/a")
+			For Each ser In series
+				Dim s As New Series With {
+					.CarId = ser.Id,
+					.Name = ser.InnerText,
+					.Url = ser.Attributes("href").Value
+					}
+				b.Series.Add(s)
+			Next
+			db.Brand.Add(b)
+			DBSave.Wait()
+		Next
 	End Function
 	Private Sub MainWindow_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 		textBox.MaxLines = 100
