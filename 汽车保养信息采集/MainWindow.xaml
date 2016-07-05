@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
-    </Grid>
+		<Button x:Name="btstart" Content="开始采集" HorizontalAlignment="Left" Margin="10,290,0,0" VerticalAlignment="Top" Width="75"/>
+		<TextBox x:Name="textBox" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="275" Margin="10,10,0,0" VerticalAlignment="Top" Width="497" IsReadOnlyCaretVisible="True"/>
+		<Button x:Name="btend" Content="退出" HorizontalAlignment="Left" Margin="432,290,0,0" VerticalAlignment="Top" Width="75"/>
+		<Button x:Name="btstop" Content="停止采集" HorizontalAlignment="Left" Margin="90,290,0,0" VerticalAlignment="Top" Width="75"/>
+		<Label x:Name="label" Content="" HorizontalAlignment="Left" Margin="170,284,0,0" VerticalAlignment="Top" Width="257"/>
+	</Grid>
 </Window>
