@@ -35,7 +35,7 @@ Class MainWindow
 		btstart.IsEnabled = False
 		Try
 			Await Task.Run(Sub()
-							   t = Task.WhenAll(GetBrand())
+							   't = Task.WhenAll(GetBrand())
 						   End Sub)
 		Catch
 			Dim ex = t.Exception
