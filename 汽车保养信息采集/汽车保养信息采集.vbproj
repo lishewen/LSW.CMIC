@@ -114,6 +114,15 @@
     <Import Include="System.Windows.Navigation" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\201607050130176_Init.Designer.vb">
+      <DependentUpon>201607050130176_Init.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607050130176_Init.vb" />
+    <Compile Include="Migrations\Configuration.vb" />
+    <Compile Include="Models\Brand.vb" />
+    <Compile Include="Models\DataBase.vb" />
+    <Compile Include="Models\EFContext.vb" />
+    <Compile Include="Models\Series.vb" />
     <Compile Include="My Project\AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -131,6 +140,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Migrations\201607050130176_Init.resx">
+      <DependentUpon>201607050130176_Init.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
