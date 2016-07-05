@@ -126,6 +126,10 @@
       <DependentUpon>201607050642385_CarInfo.vb</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201607050642385_CarInfo.vb" />
+    <Compile Include="Migrations\201607050735060_Maintenance.Designer.vb">
+      <DependentUpon>201607050735060_Maintenance.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607050735060_Maintenance.vb" />
     <Compile Include="Migrations\Configuration.vb" />
     <Compile Include="Models\Brand.vb" />
     <Compile Include="Models\CarInfo.vb" />
@@ -155,6 +159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607050642385_CarInfo.resx">
       <DependentUpon>201607050642385_CarInfo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607050735060_Maintenance.resx">
+      <DependentUpon>201607050735060_Maintenance.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

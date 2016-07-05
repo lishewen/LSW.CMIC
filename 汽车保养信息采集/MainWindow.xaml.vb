@@ -36,6 +36,7 @@ Class MainWindow
 		Try
 			Await Task.Run(Sub()
 							   't = Task.WhenAll(GetBrand())
+							   t = Task.WhenAll(GetCarInfo())
 						   End Sub)
 		Catch
 			Dim ex = t.Exception
@@ -66,6 +67,55 @@ Class MainWindow
 			Next
 			db.Brand.Add(b)
 			DBSave.Wait()
+		Next
+	End Function
+	Public Async Function GetCarInfo() As Task
+		For Each s In db.Series.ToList()
+			Dim carhtml = String.Empty
+			Try
+				carhtml = Await GetHtmlAsync(s.Url & "/maintenance.html")
+			Catch ex As Exception
+				Exit Function
+			End Try
+			Dim html As New HtmlDocument
+			html.LoadHtml(carhtml)
+			Dim cars = html.DocumentNode.SelectNodes("//div[@id='modelid']/div[@class='sel_con']/ul/li")
+			If cars IsNot Nothing Then
+				For Each car In cars
+					If db.CarInfoes.Count(Function(ci) ci.STMId = car.Id) > 0 Then Continue For
+					Dim c As New CarInfo With {
+						.Name = car.InnerText,
+						.STMId = car.Id,
+						.Year = car.Attributes("data-year").Value,
+						.Series = s
+						}
+					Dim table = html.DocumentNode.SelectSingleNode($"//div[@id='{c.STMId}_L']/table[@class='tabel1']")
+					Dim trs = table.SelectNodes("tbody/tr")
+					If trs IsNot Nothing Then
+						For Each tr In trs
+							Dim m As New Maintenance With {
+							.Name = tr.SelectSingleNode("td[1]").InnerText,
+							.行驶里程 = CInt(tr.SelectSingleNode("td[1]").InnerText.Replace("km", "")),
+							.机油 = tr.SelectSingleNode("td[2]").InnerText = "●",
+							.机滤 = tr.SelectSingleNode("td[3]").InnerText = "●",
+							.空气滤清器 = tr.SelectSingleNode("td[4]").InnerText = "●",
+							.空调滤清器 = tr.SelectSingleNode("td[5]").InnerText = "●",
+							.汽油滤清器 = tr.SelectSingleNode("td[6]").InnerText = "●",
+							.刹车油 = tr.SelectSingleNode("td[7]").InnerText = "●",
+							.变速箱油 = tr.SelectSingleNode("td[8]").InnerText = "●",
+							.转向助力油 = tr.SelectSingleNode("td[9]").InnerText = "●",
+							.火花塞 = tr.SelectSingleNode("td[10]").InnerText = "●",
+							.正时皮带 = tr.SelectSingleNode("td[11]").InnerText = "●"
+							}
+							c.Maintenances.Add(m)
+						Next
+					End If
+					db.CarInfoes.Add(c)
+					DBSave.Wait()
+					ShowLog(c.STMId, c.Name)
+				Next
+			End If
+			ShowLog("采集完成", s.Name)
 		Next
 	End Function
 	Private Sub MainWindow_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded

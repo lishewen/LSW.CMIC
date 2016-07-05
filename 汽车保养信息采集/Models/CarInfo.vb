@@ -8,4 +8,5 @@
 	Public Property STMId As String
 	Public Property Year As String
 	Public Overridable Property Maintenances As ICollection(Of Maintenance)
+	Public Overridable Property Series As Series
 End Class
