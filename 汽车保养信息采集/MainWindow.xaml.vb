@@ -70,7 +70,7 @@ Class MainWindow
 		Next
 	End Function
 	Public Async Function GetCarInfo() As Task
-		For Each s In db.Series.ToList()
+		For Each s In db.Series.Where(Function(ser) ser.ID >= 586).ToList()
 			Dim carhtml = String.Empty
 			Try
 				carhtml = Await GetHtmlAsync(s.Url & "/maintenance.html")
@@ -93,21 +93,25 @@ Class MainWindow
 					Dim trs = table.SelectNodes("tbody/tr")
 					If trs IsNot Nothing Then
 						For Each tr In trs
-							Dim m As New Maintenance With {
-							.Name = tr.SelectSingleNode("td[1]").InnerText,
-							.行驶里程 = CInt(tr.SelectSingleNode("td[1]").InnerText.Replace("km", "")),
-							.机油 = tr.SelectSingleNode("td[2]").InnerText = "●",
-							.机滤 = tr.SelectSingleNode("td[3]").InnerText = "●",
-							.空气滤清器 = tr.SelectSingleNode("td[4]").InnerText = "●",
-							.空调滤清器 = tr.SelectSingleNode("td[5]").InnerText = "●",
-							.汽油滤清器 = tr.SelectSingleNode("td[6]").InnerText = "●",
-							.刹车油 = tr.SelectSingleNode("td[7]").InnerText = "●",
-							.变速箱油 = tr.SelectSingleNode("td[8]").InnerText = "●",
-							.转向助力油 = tr.SelectSingleNode("td[9]").InnerText = "●",
-							.火花塞 = tr.SelectSingleNode("td[10]").InnerText = "●",
-							.正时皮带 = tr.SelectSingleNode("td[11]").InnerText = "●"
-							}
-							c.Maintenances.Add(m)
+							Try
+								Dim m As New Maintenance With {
+									.Name = tr.SelectSingleNode("td[1]").InnerText,
+									.行驶里程 = CInt(tr.SelectSingleNode("td[1]").InnerText.Replace("km", "")),
+									.机油 = tr.SelectSingleNode("td[2]").InnerText = "●",
+									.机滤 = tr.SelectSingleNode("td[3]").InnerText = "●",
+									.空气滤清器 = tr.SelectSingleNode("td[4]").InnerText = "●",
+									.空调滤清器 = tr.SelectSingleNode("td[5]").InnerText = "●",
+									.汽油滤清器 = tr.SelectSingleNode("td[6]").InnerText = "●",
+									.刹车油 = tr.SelectSingleNode("td[7]").InnerText = "●",
+									.变速箱油 = tr.SelectSingleNode("td[8]").InnerText = "●",
+									.转向助力油 = tr.SelectSingleNode("td[9]").InnerText = "●",
+									.火花塞 = tr.SelectSingleNode("td[10]").InnerText = "●",
+									.正时皮带 = tr.SelectSingleNode("td[11]").InnerText = "●"
+								}
+								c.Maintenances.Add(m)
+							Catch
+								Continue For
+							End Try
 						Next
 					End If
 					db.CarInfoes.Add(c)
